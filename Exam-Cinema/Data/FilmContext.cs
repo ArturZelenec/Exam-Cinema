@@ -29,7 +29,7 @@ namespace Exam_Cinema.Data
                 );
             books.Property(b => b.Title)
                  .HasMaxLength(200);
-            books.Property(b => b.Author)
+            books.Property(b => b.Director)
                  .HasMaxLength(100);
             books.Property(b => b.EFormatType)
                  .HasConversion<string>()

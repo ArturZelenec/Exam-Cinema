@@ -8,11 +8,11 @@ namespace Exam_Cinema.Model
         {
         }
 
-        public Film(string isbn, string title, string author, EFormatType eFormatType, int publishYear)
+        public Film(string isbn, string title, string director, EFormatType eFormatType, int publishYear)
         {
             ISBN = isbn;
             Title = title;
-            Author = author;
+            Director = director;
             EFormatType = eFormatType;
             PublishYear = publishYear;
             Created = DateTime.Now;
@@ -22,7 +22,7 @@ namespace Exam_Cinema.Model
         [Key]
         public string ISBN { get; set; }
         public string Title { get; set; }
-        public string Author { get; set; }
+        public string Director { get; set; }
         public EFormatType EFormatType { get; set; }
         public int PublishYear { get; set; }
         public DateTime Created { get; set; }

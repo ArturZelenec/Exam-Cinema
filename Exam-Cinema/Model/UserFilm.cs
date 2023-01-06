@@ -11,9 +11,9 @@ namespace Exam_Cinema.Model
         public int LibraryFilmId { get; set; }
         public virtual LibraryFilm LibraryFilm { get; set; }
         public DateTime FilmTaken { get; set; }
-        public DateTime? FilmReturned { get; set; }
+        //public DateTime? FilmReturned { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
-        public int DaysLate { get; set; } = 0;
+        //public int DaysLate { get; set; } = 0;
     }
 }

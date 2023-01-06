@@ -1,4 +1,4 @@
 ﻿namespace Exam_Cinema.Model
 {
-    public enum EFormatType { DVD, VHS }
+    public enum EFormatType { HD, FullHD, UltraHD }
 }

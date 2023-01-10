@@ -4,7 +4,7 @@ namespace Exam_Cinema.Repository.IRepository
 {
     public interface IFilmRepository : IRepository<Film>
     {
-        Film Update(Film film);
+        Task<Film> UpdateAsync(Film film);
     
     }
 }

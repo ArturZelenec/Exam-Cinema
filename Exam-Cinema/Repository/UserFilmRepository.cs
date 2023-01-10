@@ -12,12 +12,12 @@ namespace Exam_Cinema.Repository
         {
             _db = db;
         }
-
-        public UserFilm Update(UserFilm userFilm)
+        
+        public async Task<UserFilm> UpdateAsync(UserFilm userFilm)
         {
             userFilm.Updated = DateTime.Now;
             _db.UserFilms.Update(userFilm);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return userFilm;
         }
 

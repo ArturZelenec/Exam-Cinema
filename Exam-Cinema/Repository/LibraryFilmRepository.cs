@@ -13,11 +13,11 @@ namespace Exam_Cinema.Repository
             _db = db;
         }
 
-        public LibraryFilm Update(LibraryFilm libraryFilm)
+        public async Task<LibraryFilm> UpdateAsync(LibraryFilm libraryFilm)
         {
             libraryFilm.Updated = DateTime.Now;
             _db.LibraryFilms.Update(libraryFilm);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return libraryFilm;
         }
     }

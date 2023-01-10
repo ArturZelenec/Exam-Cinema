@@ -3,6 +3,7 @@ using Exam_Cinema.Model;
 using Exam_Cinema.Model.DTO;
 using Exam_Cinema.Repository.IRepository;
 using Exam_Cinema.Services.IServices;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -26,12 +27,19 @@ namespace Exam_Cinema.Repository
             _jwtService = jwtService;
         }
 
-        public bool IsUniqueUser(string username) => !_db.Users.Any(u => u.Username == username);
-
-        public LoginResponse Login(LoginRequest loginRequest)
+        public async Task<bool> IsUniqueUserAsync(string username)
+        {
+            var isUniq = await _db.Users.AnyAsync(u => u.Username == username); //????? !_db
+            if (isUniq == null)
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
         {
             var inputPastwordBytes = Encoding.UTF8.GetBytes(loginRequest.Password);
-            var user = _db.Users.FirstOrDefault(u => u.Username.ToLower() == loginRequest.Username.ToLower());
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == loginRequest.Username.ToLower());
 
             if (user == null) return _emptyTokenAndNullUser;
 
@@ -54,7 +62,7 @@ namespace Exam_Cinema.Repository
             return loginResponse;
         }
 
-        public RegistrationResponse Register(RegistrationRequest registrationRequest)
+        public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest registrationRequest)
         {
             _passwordService.CreatePasswordHash(registrationRequest.Password, out byte[] hash, out byte[] salt);
 
@@ -77,12 +85,12 @@ namespace Exam_Cinema.Repository
             };
 
             _db.Users.Add(user);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
             return registrationResponse;
         }
 
-        public List<GetUserDto> GetAll(Expression<Func<User, bool>>? filter = null)
+        public async Task<List<GetUserDto>> GetAllAsync(Expression<Func<User, bool>>? filter = null)
         {
             IQueryable<User> users = _db.Users;
             if (filter != null) users = _db.Users.Where(filter);
@@ -102,9 +110,9 @@ namespace Exam_Cinema.Repository
             return userDto;
         }
 
-        public GetUserDto Get(Expression<Func<User, bool>> filter)
+        public async Task<GetUserDto> GetAsync(Expression<Func<User, bool>> filter)
         {
-            User user = _db.Users.Where(filter).FirstOrDefault();
+            User user = await _db.Users.Where(filter).FirstOrDefaultAsync();
             var userDto = new GetUserDto()
             {
                 UserId = user.Id,
@@ -117,12 +125,12 @@ namespace Exam_Cinema.Repository
             return userDto;
         }
 
-        public void UpdateTakenLibraryFilms(int userId, int modifier)
+        public async Task UpdateTakenLibraryFilms(int userId, int modifier)
         {
             User user = _db.Users.First(u => u.Id == userId);
             user.TakenFilms += modifier;
             _db.Users.Update(user);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
         //public void UpdateBooksNotReturnedInTimeAndTotalDebt(int userId, int booksNotReturnedInTime, double totalDebt)

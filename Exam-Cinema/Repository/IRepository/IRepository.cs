@@ -4,14 +4,14 @@ namespace Exam_Cinema.Repository.IRepository
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        List<TEntity> GetAll(Expression<Func<TEntity, bool>>? filter = null);
+        Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null);
 
-        TEntity Get(Expression<Func<TEntity, bool>> filter, bool tracked = true);
+        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool tracked = true);
 
-        void Create(TEntity entity);
+        Task CreateAsync(TEntity entity);
 
-        void Remove(TEntity entity);
+        Task RemoveAsync(TEntity entity);
 
-        void Save();
+        Task SaveAsync();
     }
 }

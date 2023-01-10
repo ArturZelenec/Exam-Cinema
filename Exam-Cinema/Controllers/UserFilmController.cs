@@ -5,6 +5,7 @@ using Exam_Cinema.Repository.IRepository;
 using Exam_Cinema.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace Exam_Cinema.Controllers
 {
@@ -50,43 +51,64 @@ namespace Exam_Cinema.Controllers
         /// <summary>
         /// Grazina vieno kliento ziuretu filmu istorija
         /// </summary>
+        /// <response code="200">Teisingai ivykdomas gavimas ir parodoma vieno filmo informacija</response>
+        /// <response code="400">Blogas kreipimasis</response>
+        /// <response code="404">Nerasta</response>
+        /// <response code="500">Baisi klaida!</response>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("Get/{id:int}")]
-        public ActionResult<GetUserFilmDto> GetUserFilmById(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<GetUserFilmDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Produces(MediaTypeNames.Application.Json)]
+
+
+        public async Task<ActionResult<GetUserFilmDto>> GetUserFilmById(int id)
         {
-            var userFilm = _userFilmRepo.Get(ub => ub.UserId == id);
+            var userFilm = await _userFilmRepo.GetAsync(ub => ub.UserId == id);
             return _adapter.Adapt(userFilm);
+
         }
+
+
 
         /// <summary>
         /// Paimti filma is filmotekos
         /// </summary>
+        /// <response code="200">Teisingai ivykdomas gavimas ir parodoma vieno filmo informacija</response>
+        /// <response code="400">Blogas kreipimasis</response>
+        /// <response code="404">Nerasta</response>
+        /// <response code="500">Baisi klaida!</response>
         /// <param name="createUserFilmDto">Parametrai: kas ima filma ir koki ima filma</param>
         /// <returns></returns>
         [HttpPost("TakeLibraryFilm")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<GetUserFilmDto> TakeLibraryFilm(CreateUserFilmkDto createUserFilmDto)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<GetUserFilmDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Produces(MediaTypeNames.Application.Json)]
+        public async Task<ActionResult<GetUserFilmDto>> TakeLibraryFilm(CreateUserFilmkDto createUserFilmDto)
         {
             if (createUserFilmDto == null) return BadRequest();
 
-            var libraryFilm = _libraryFilmRepo.Get(b => b.Id == createUserFilmDto.LibraryFilmId);
+            var libraryFilm = await _libraryFilmRepo.GetAsync(b => b.Id == createUserFilmDto.LibraryFilmId);
             if (libraryFilm == null) return NotFound("libraryFilm = null");
 
-            //var canThisBookBeTaken = _libraryHelper.CanThisBookBeTaken(libraryFilm);
-            //if (!canThisBookBeTaken.Answer) return NotFound(canThisBookBeTaken.Message);
+            
 
-            var getUserDto = _userRepo.Get(b => b.Id == createUserFilmDto.UserId);
+            var getUserDto = await _userRepo.GetAsync(b => b.Id == createUserFilmDto.UserId);
             if (getUserDto == null) return NotFound("getUserDto = null");
 
-            //var canThisUserTakeABook = _libraryHelper.CanThisUserTakeABook(getUserDto);
-            //if (!canThisUserTakeABook.Answer) return NotFound(canThisUserTakeABook.Message);
+            
 
             UserFilm newUserFilm = _adapter.Adapt(getUserDto, libraryFilm);
-            _userFilmRepo.Create(newUserFilm);
+            _userFilmRepo.CreateAsync(newUserFilm);
 
             libraryFilm.IsTaken = true;
-            _libraryFilmRepo.Update(libraryFilm);
+            await _libraryFilmRepo.UpdateAsync(libraryFilm);
 
             _userRepo.UpdateTakenLibraryFilms(getUserDto.UserId, +1);
 
@@ -95,30 +117,5 @@ namespace Exam_Cinema.Controllers
             return CreatedAtAction(nameof(GetUserFilmById), new { id = getUserFilmDto.UserId }, getUserFilmDto);
         }
 
-        /// <summary>
-        /// Graziname knyga i biblioteka
-        /// </summary>
-        /// <param name="id">bibliotekos knygos id</param>
-        /// <returns></returns>
-        //[HttpPut("ReturnLibraryBook/{id:int}")]
-        //[ProducesResponseType(StatusCodes.Status201Created)]
-        //public IActionResult ReturnLibraryBookById(int id)
-        //{
-        //    var userBook = _userFilmRepo.Get(b => b.Id == id);
-        //    if (userBook == null) return NotFound("userBook == null");
-
-        //    var libraryBook = _libraryFilmRepo.Get(b => b.Id == userBook.LibraryBookId);
-        //    if (libraryBook == null) return NotFound("libraryBook == null");
-
-        //    userBook.BookReturned = DateTime.Now;
-        //    _userFilmRepo.Update(userBook);
-
-        //    libraryBook.IsTaken = false;
-        //    _libraryFilmRepo.Update(libraryBook);
-
-        //    _userRepo.UpdateTakenLibraryBooks(userBook.UserId, -1);
-
-        //    return NoContent();
-        //}
     }
 }

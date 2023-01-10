@@ -38,13 +38,13 @@ namespace Exam_Cinema.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<GetFilmDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
-        public ActionResult<IEnumerable<GetFilmDto>> GetAllFilms()
+        public async Task<ActionResult<IEnumerable<GetFilmDto>>> GetAllFilms()
         {
             _logger.LogInformation("HttpGet AllFilmss() buvo iskvietas {0} ", DateTime.Now);
             try
             {
-                return Ok(_filmRepo.GetAll()
-                    //_db.Books
+                var getAll = await _filmRepo.GetAllAsync();
+                return Ok(getAll
                     .Select(film => _wrapper.Bind(film))
                     .ToList());
             }
@@ -70,7 +70,7 @@ namespace Exam_Cinema.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
-        public ActionResult<GetFilmDto> GetFilmByISBN(string isbn)
+        public async Task<ActionResult<GetFilmDto>> GetFilmByISBN(string isbn)
         {
             _logger.LogInformation("HttpGet GetFilmByISBN(isbn = {0}) buvo iskvietas {1} ", isbn, DateTime.Now);
             try
@@ -81,7 +81,7 @@ namespace Exam_Cinema.Controllers
                     return NotFound(); // return BadRequest();
                 }
 
-                var film = _filmRepo.Get(b => b.ISBN == isbn);
+                var film = await _filmRepo.GetAsync(b => b.ISBN == isbn);
                 if (film == null)
                 {
                     _logger.LogError("HttpGet GetFilmByISBN(isbn = {0}) filmas su tokiu isbn nerastas {1} ", isbn, DateTime.Now);
@@ -114,7 +114,7 @@ namespace Exam_Cinema.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
-        public ActionResult<CreateFilmDto> CreateFilm(CreateFilmDto createFilmDto)
+        public async Task<ActionResult<CreateFilmDto>> CreateFilm(CreateFilmDto createFilmDto)
         {
             _logger.LogInformation("HttpPost CreateFilm(createFilmDto = {0}) buvo iskvietas {1} ", JsonConvert.SerializeObject(createFilmDto), DateTime.Now);
             try
@@ -126,7 +126,7 @@ namespace Exam_Cinema.Controllers
                 }
 
                 Film newFilm = _wrapper.Bind(createFilmDto);
-                _filmRepo.Create(newFilm);
+                _filmRepo.CreateAsync(newFilm);
 
                 return CreatedAtAction(nameof(GetFilmByISBN), new { isbn = newFilm.ISBN }, createFilmDto);
 
@@ -150,12 +150,12 @@ namespace Exam_Cinema.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<GetFilmDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("Filter")]
-        public ActionResult<List<GetFilmDto>> Filter([FromQuery] FilterFilmRequestDto req)
+        public async Task<ActionResult<List<GetFilmDto>>> Filter([FromQuery] FilterFilmRequestDto req)
         {
             _logger.LogInformation("HttpGet Filter(FilterFilmsRequestDto req = {0}) buvo iskviestas {1} ", req, DateTime.Now);
             try
             {
-                var films = _filmRepo.GetAll(b => b.Title.Contains(req.Title != null ? req.Title : "") &&
+                var films = await _filmRepo.GetAllAsync(b => b.Title.Contains(req.Title != null ? req.Title : "") &&
                                                   b.Director.Contains(req.Director != null ? req.Director : ""));
 
                 var filmsDto = new List<GetFilmDto>();
@@ -192,7 +192,7 @@ namespace Exam_Cinema.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult UpdateFilm(UpdateFilmDto filmUpdated)
+        public async Task<IActionResult> UpdateFilm(UpdateFilmDto filmUpdated)
         {
             _logger.LogInformation("HttpPut UpdateFilm(filmUpdated = {0}) buvo iskvietas {1} ", JsonConvert.SerializeObject(filmUpdated), DateTime.Now);
             try
@@ -204,7 +204,7 @@ namespace Exam_Cinema.Controllers
                 }
 
                 Film film = _wrapper.Bind(filmUpdated);
-                _filmRepo.Update(film);
+                await _filmRepo.UpdateAsync(film);
                 return NoContent();
 
             }
@@ -232,19 +232,19 @@ namespace Exam_Cinema.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult DeleteFilmByISBN(string isbn)
+        public async Task<ActionResult> DeleteFilmByISBN(string isbn)
         {
             _logger.LogInformation("HttpDelete DeleteFilmByISBN(isbn = {0}) buvo iskvietas {1} ", isbn, DateTime.Now);
             try
             {
-                var film = _filmRepo.Get(b => b.ISBN == isbn);
+                var film = await _filmRepo.GetAsync(b => b.ISBN == isbn);
                 if (film == null)
                 {
                     _logger.LogError("HttpDelete DeleteFilmByISBN(isbn = {0}) filmas su tokiu isbn nerastas {1} ", isbn, DateTime.Now);
                     return NotFound();
                 }
 
-                _filmRepo.Remove(film);
+                await _filmRepo.RemoveAsync(film);
                 //_db.Books.Remove(book);
                 //_db.SaveChanges();
 

@@ -3,11 +3,11 @@
     public class GetLibraryFilmDto
     {
         public int Id { get; set; }
-        public string BookISBN { get; set; }
-        public string BookTitle { get; set; }
-        public string BookAuthor { get; set; }
-        public string BookCoverType { get; set; }
-        public string BookPublishYear { get; set; }
+        public string FilmISBN { get; set; }
+        public string FilmTitle { get; set; }
+        public string FilmDirector{ get; set; }
+        public string FilmFormatType{ get; set; }
+        public string FilmPublishYear { get; set; }
         public bool IsTaken { get; set; }
         public virtual List<LibraryFilmUserFilmDto>? LibraryFilmUserHistory { get; set; }
     }

@@ -9,6 +9,8 @@ namespace Exam_Cinema.Data
 
         public DbSet<Film> Films { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserFilm> UserFilms { get; set; }
+        public DbSet<LibraryFilm> LibraryFilms { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

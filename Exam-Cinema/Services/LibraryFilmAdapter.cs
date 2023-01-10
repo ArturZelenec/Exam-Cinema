@@ -44,7 +44,7 @@ namespace Exam_Cinema.Services
             {
                 Name = userFilm.User.FullName,
                 FilmTaken = userFilm.FilmTaken,
-                //FilmReturned = userFilm.FilmReturned
+                
             };
         }
 

@@ -29,9 +29,9 @@ namespace Exam_Cinema.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetAll")]
-        public ActionResult<List<GetLibraryFilmDto>> GetLibraryFilms()
+        public async Task<ActionResult<List<GetLibraryFilmDto>>> GetLibraryFilms()
         {
-            var allLibraryFilms = _libraryFilmRepo.GetAll();
+            var allLibraryFilms = await _libraryFilmRepo.GetAllAsync();
             return Ok(_adapter.Adapt(allLibraryFilms));
         }
 
@@ -41,9 +41,9 @@ namespace Exam_Cinema.Controllers
         /// <param name="id">filmotekos filmo id</param>
         /// <returns></returns>
         [HttpGet("Get/{id:int}")]
-        public ActionResult<GetLibraryFilmDto> GetLibraryFilmById(int id)
+        public async Task<ActionResult<GetLibraryFilmDto>> GetLibraryFilmById(int id)
         {
-            var libraryFilm = _libraryFilmRepo.Get(lb => lb.Id == id);
+            var libraryFilm = await _libraryFilmRepo.GetAsync(lb => lb.Id == id);
             if (libraryFilm == null) return NotFound();
             return Ok(_adapter.Adapt(libraryFilm));
         }
@@ -56,7 +56,7 @@ namespace Exam_Cinema.Controllers
         [HttpPost("Add")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<GetLibraryFilmDto> AddLibraryFilm(CreateLibraryFilmDto createLibraryFilmDto)
+        public async Task<ActionResult<GetLibraryFilmDto>> AddLibraryFilm(CreateLibraryFilmDto createLibraryFilmDto)
         {
             if (createLibraryFilmDto == null || createLibraryFilmDto.FilmISBN == "") return BadRequest();
 
@@ -64,7 +64,7 @@ namespace Exam_Cinema.Controllers
             if (film == null) return NotFound();
 
             LibraryFilm newLibraryFilm = _adapter.Adapt(createLibraryFilmDto.FilmISBN, film);
-            _libraryFilmRepo.Create(newLibraryFilm);
+            await _libraryFilmRepo.CreateAsync(newLibraryFilm);
             GetLibraryFilmDto getLibraryFilmDto = _adapter.Adapt(newLibraryFilm);
 
             return CreatedAtAction(nameof(GetLibraryFilmById), new { id = newLibraryFilm.Id }, getLibraryFilmDto);
@@ -102,9 +102,9 @@ namespace Exam_Cinema.Controllers
         [HttpDelete("Delete/{id:int}")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult DeleteLibraryFilmById(int id)
+        public async Task<IActionResult> DeleteLibraryFilmById(int id)
         {
-            var libraryFilm = _libraryFilmRepo.Get(lb => lb.Id == id);
+            var libraryFilm = await _libraryFilmRepo.GetAsync(lb => lb.Id == id);
             if (libraryFilm == null) return NotFound();
 
             while (_db.UserFilms.FirstOrDefault(ub => ub.LibraryFilmId == id) != null)
@@ -114,7 +114,7 @@ namespace Exam_Cinema.Controllers
                 _db.SaveChanges();
             }
 
-            _libraryFilmRepo.Remove(libraryFilm);
+            await _libraryFilmRepo.RemoveAsync(libraryFilm);
 
             return NoContent();
         }

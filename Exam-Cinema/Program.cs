@@ -29,7 +29,7 @@ builder.Services.AddScoped<IUserFilmRepository, UserFilmRepository>();
 builder.Services.AddDbContext<FilmContext>(option =>
 {
     option.UseSqlite(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
-    option.UseLazyLoadingProxies();
+    //option.UseLazyLoadingProxies();
 });
 
 builder.Services.AddHttpClient("OpenRouteServiceApi", client =>

@@ -12,6 +12,5 @@ namespace Exam_Cinema.Repository.IRepository
         Task<List<GetUserDto>> GetAllAsync(Expression<Func<User, bool>>? filter = null);
         Task<GetUserDto> GetAsync(Expression<Func<User, bool>> filter = null);
         Task UpdateTakenLibraryFilms(int userId, int modifier);
-        //public void UpdateBooksNotReturnedInTimeAndTotalDebt(int userId, int booksNotReturnedInTime, double totalDebt);
     }
 }

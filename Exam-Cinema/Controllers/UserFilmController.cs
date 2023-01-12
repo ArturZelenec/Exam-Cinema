@@ -65,9 +65,11 @@ namespace Exam_Cinema.Controllers
         [Produces(MediaTypeNames.Application.Json)]
 
 
-        public async Task<ActionResult<GetUserFilmDto>> GetUserFilmById(int id)
+        public async Task<ActionResult<GetUserAllFilmsDTO>> GetUserFilmById(int id)
         {
-            var userFilm = await _userFilmRepo.GetAsync(ub => ub.UserId == id);
+            //var userFilm = await _userFilmRepo.Getdata_With_EagerLoading();
+            var userFilm = await _userFilmRepo.GetAllAsync(x => x.UserId == id, new List<string> {"User","LibraryFilm"});
+
             return _adapter.Adapt(userFilm);
 
         }

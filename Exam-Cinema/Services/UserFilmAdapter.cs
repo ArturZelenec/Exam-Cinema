@@ -24,13 +24,47 @@ namespace Exam_Cinema.Services
             {
                 Id = userFilm.Id,
                 UserId = userFilm.UserId,
-                UserFullName = userFilm.User.FullName,
+                UserFullName = userFilm.User?.FullName,
                 LibraryFilmId = userFilm.LibraryFilmId,
-                FilmISBN = userFilm.LibraryFilm.Film.ISBN,
-                FilmTitle = userFilm.LibraryFilm.Film.Title,
-                FilmDirector = userFilm.LibraryFilm.Film.Director,
+                FilmISBN = userFilm.LibraryFilm.Film?.ISBN,
+                FilmTitle = userFilm.LibraryFilm.Film?.Title,
+                FilmDirector = userFilm.LibraryFilm.Film?.Director,
                 FilmTaken = userFilm.FilmTaken,
             };
+        }
+
+        public GetUserAllFilmsDTO Adapt(IEnumerable<UserFilm> userFilms)
+        {
+            var result = new GetUserAllFilmsDTO();
+            foreach (var userFilm in userFilms) 
+            {
+                result.Films.Add(new GetUserFilmDto
+                {
+                    
+                    Id = userFilm.Id,
+                    UserId = userFilm.UserId,
+                    UserFullName = userFilm.User?.FullName,
+                    LibraryFilmId = userFilm.LibraryFilmId,
+                    FilmISBN = userFilm.LibraryFilm.Film?.ISBN,
+                    FilmTitle = userFilm.LibraryFilm.Film?.Title,
+                    FilmDirector = userFilm.LibraryFilm.Film?.Director,
+                    FilmTaken = userFilm.FilmTaken,
+                });
+            }
+            return result;
+            //return new GetUserFilmDto()
+            //{
+
+            //    Id = userFilm.Id,
+            //    UserId = userFilm.UserId,
+            //    UserFullName = userFilm.User.FullName,
+            //    LibraryFilmId = userFilm.LibraryFilmId,
+            //    FilmISBN = userFilm.LibraryFilm.Film.ISBN,
+            //    FilmTitle = userFilm.LibraryFilm.Film.Title,
+            //    FilmDirector = userFilm.LibraryFilm.Film.Director,
+            //    FilmTaken = userFilm.FilmTaken,
+
+            //};
         }
     }
 }

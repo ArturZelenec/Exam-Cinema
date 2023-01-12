@@ -119,8 +119,7 @@ namespace Exam_Cinema.Repository
                 FullName = user.FullName,
                 Role = user.Role,
                 TakenLibraryFilms = user.TakenFilms,
-                //FilmsNotReturnedInTime = user.FilmsNotReturnedInTime,
-                //TotalDebt = user.TotalDebt
+               
             };
             return userDto;
         }
@@ -133,14 +132,7 @@ namespace Exam_Cinema.Repository
             await _db.SaveChangesAsync();
         }
 
-        //public void UpdateBooksNotReturnedInTimeAndTotalDebt(int userId, int booksNotReturnedInTime, double totalDebt)
-        //{
-        //    User user = _db.Users.First(u => u.Id == userId);
-        //    user.BooksNotReturnedInTime = booksNotReturnedInTime;
-        //    user.TotalDebt = totalDebt;
-        //    _db.Users.Update(user);
-        //    _db.SaveChanges();
-        //}
+        
 
     }
 }

@@ -24,11 +24,14 @@ namespace Exam_Cinema.Repository
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool tracked = true)
         {
+
             IQueryable<TEntity> query = _dbSet;
             if (!tracked) query = query.AsNoTracking();
             query = query.Where(filter);
+            //query = query.Include("user");
             return await query.FirstOrDefaultAsync();
         }
+
 
         public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null)
         {
@@ -46,6 +49,33 @@ namespace Exam_Cinema.Repository
         public async Task SaveAsync()
         {
             _db.SaveChangesAsync();
+        }
+
+
+
+
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter,ICollection<string> includeTables, bool tracked = true)
+        {
+
+            IQueryable<TEntity> query = _dbSet;
+            if (!tracked) query = query.AsNoTracking();
+            query = query.Where(filter);
+            foreach (var tableName in includeTables)
+            {
+                query = query.Include(tableName);
+            }
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter, ICollection<string> includeTables)
+        {
+            IQueryable<TEntity> query = _dbSet;
+            if (filter != null) query = query.Where(filter);
+            foreach (var tableName in includeTables)
+            {
+                query = query.Include(tableName);
+            }
+            return await query.ToListAsync();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Exam_Cinema.Data;
 using Exam_Cinema.Model;
 using Exam_Cinema.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Exam_Cinema.Repository
 {
@@ -21,12 +22,16 @@ namespace Exam_Cinema.Repository
             return userFilm;
         }
 
-        //public void UpdateDaysLate(int userFilmId, int daysLate)
+        //egerlouding
+        //public async Task<IEnumerable<UserFilm>> Getdata_With_EagerLoading()
         //{
-        //    var userBook = _db.UserFilms.First(u => u.Id == userFilmId);
-        //    //userFilms.DaysLate = daysLate;
-        //    _db.UserFilms.Update(userBook);
-        //    _db.SaveChanges();
+
+        //    var duomenys = await _db.UserFilms
+        //    .Include(f => f.LibraryFilm)
+        //    .ToListAsync();
+
+        //    return duomenys;
+
         //}
 
     }

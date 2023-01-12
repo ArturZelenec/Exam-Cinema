@@ -20,10 +20,10 @@ namespace Exam_Cinema.Services
             {
                 Id = libraryFilm.Id,
                 FilmISBN = libraryFilm.FilmISBN,
-                FilmTitle = libraryFilm.Film.Title,
-                FilmDirector = libraryFilm.Film.Director,
-                FilmFormatType = libraryFilm.Film.EFormatType.ToString(),
-                FilmPublishYear = libraryFilm.Film.PublishYear.ToString(),
+                FilmTitle = libraryFilm.Film?.Title,
+                FilmDirector = libraryFilm.Film?.Director,
+                FilmFormatType = libraryFilm.Film?.EFormatType.ToString(),
+                FilmPublishYear = libraryFilm.Film?.PublishYear.ToString(),
                 IsTaken = libraryFilm.IsTaken,
                 LibraryFilmUserHistory = libraryFilmUserHistory
                 

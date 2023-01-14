@@ -29,12 +29,12 @@ namespace Exam_Cinema.Repository
 
         public async Task<bool> IsUniqueUserAsync(string username)
         {
-            var isUniq = await _db.Users.AnyAsync(u => u.Username == username); //????? !_db
-            if (isUniq == null)
+            var isNonUniq = await _db.Users.AnyAsync(u => u.Username == username); //????? !_db
+            if (isNonUniq)
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
         public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
         {

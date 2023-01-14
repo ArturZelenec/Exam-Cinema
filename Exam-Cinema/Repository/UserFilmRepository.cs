@@ -23,16 +23,18 @@ namespace Exam_Cinema.Repository
         }
 
         //egerlouding
-        //public async Task<IEnumerable<UserFilm>> Getdata_With_EagerLoading()
-        //{
+        public async Task<IEnumerable<UserFilm>> Getdata_With_EagerLoading()
+        {
 
-        //    var duomenys = await _db.UserFilms
-        //    .Include(f => f.LibraryFilm)
-        //    .ToListAsync();
+            var duomenys = await _db.UserFilms
+            .Include(f => f.User)
+            .Include(f => f.LibraryFilm)
+            .ThenInclude(f => f.Film)
+            .ToListAsync();
 
-        //    return duomenys;
+            return duomenys;
 
-        //}
+        }
 
     }
 }

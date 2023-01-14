@@ -11,23 +11,24 @@ namespace Exam_Cinema.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserFilm> UserFilms { get; set; }
         public DbSet<LibraryFilm> LibraryFilms { get; set; }
+        //public DbSet<MovieReview> MovieReviews { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             var books = modelBuilder.Entity<Film>();
             books.HasData(
-                new Film("0553211765", "A Tale of Two Cities", "Charles Dickens", EFormatType.FullHD, 1989),
-                new Film("0786275391", "The Little Prince", "Antoine de Saint-Exupery", EFormatType.UltraHD, 2005),
-                new Film("1856134032", "Harry Potter and The Philosopher's Stone", "Rowling, J. K.", EFormatType.HD, 1997),
-                new Film("0451528905", "Don Quixote", "Miguel de Cervantes", EFormatType.HD, 2003),
-                new Film("0847980790", "And Then There Were None", "Agatha Christie", EFormatType.FullHD, 1939),
-                new Film("0020198817", "The Great Gatsby", "F. Scott Fitzgerald", EFormatType.UltraHD, 1992),
-                new Film("0553213113", "Moby Dick", "Herman Melville", EFormatType.HD, 1981),
-                new Film("1400079985", "War and Peace", "Leo Tolstoy", EFormatType.HD, 2008),
-                new Film("0451526929", "Hamlet", "William Shakespeare", EFormatType.UltraHD, 1998),
-                new Film("0439136350", "Harry Potter And The Prisoner Of Azkaban", "Rowling, J. K.", EFormatType.UltraHD, 1999),
-                new Film("1856136124", "Harry Potter and the Chamber of Secrets", "Rowling, J. K.", EFormatType.FullHD, 1998)
+                new Film("0553211765", "The Shawshank Redemption: ", "Frank Darabonts", EFormatType.FullHD, 1994),
+                new Film("0786275391", "The Godfather: ", "Francis Ford Coppola", EFormatType.UltraHD, 1972),
+                new Film("1856134032", "The Dark Knight: ", "Christopher Nolan", EFormatType.HD, 2008),
+                new Film("0451528905", "12 Angry Men: ", "Sidney Lumet", EFormatType.HD, 1957),
+                new Film("0847980790", "Schindler's List: ", "Steven Spielberg", EFormatType.FullHD, 1993),
+                new Film("0020198817", "Pulp Fiction: ", "Quentin Tarantino", EFormatType.UltraHD, 1994),
+                new Film("0553213113", "The Good, the Bad and the Ugly: ", "Sergio Leone", EFormatType.HD, 1966),
+                new Film("1400079985", "Forrest Gump: ", "Robert Zemeckis", EFormatType.HD, 1994),
+                new Film("0451526929", "Fight Club: ", "David Fincher", EFormatType.UltraHD, 1999),
+                new Film("0439136350", "Inception: ", "Christopher Nolan", EFormatType.UltraHD, 2010),
+                new Film("1856136124", "The Matrix: ", "Lilly Wachowski", EFormatType.FullHD, 1999)
                 );
             books.Property(b => b.Title)
                  .HasMaxLength(200);

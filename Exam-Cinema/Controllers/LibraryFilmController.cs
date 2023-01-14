@@ -31,7 +31,7 @@ namespace Exam_Cinema.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<List<GetLibraryFilmDto>>> GetLibraryFilms()
         {
-            var allLibraryFilms = await _libraryFilmRepo.GetAllAsync();
+            var allLibraryFilms = await _libraryFilmRepo.Getdata_With_EagerLoading();
             return Ok(_adapter.Adapt(allLibraryFilms));
         }
 
@@ -43,9 +43,15 @@ namespace Exam_Cinema.Controllers
         [HttpGet("Get/{id:int}")]
         public async Task<ActionResult<GetLibraryFilmDto>> GetLibraryFilmById(int id)
         {
-            var libraryFilm = await _libraryFilmRepo.GetAsync(lb => lb.Id == id);
+            var libraryFilm = await _libraryFilmRepo.Getdata_With_EagerLoading();
             if (libraryFilm == null) return NotFound();
+            libraryFilm = libraryFilm.Where(x => x.Id == id);
             return Ok(_adapter.Adapt(libraryFilm));
+
+
+            //var libraryFilm = await _libraryFilmRepo.GetAsync(lb => lb.Id == id);
+            //if (libraryFilm == null) return NotFound();
+            //return Ok(_adapter.Adapt(libraryFilm));
         }
 
         /// <summary>

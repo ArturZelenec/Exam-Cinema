@@ -20,7 +20,7 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddTransient<IFilmWrapper, FilmWrapper>();
 builder.Services.AddTransient<ILibraryFilmAdapter, LibraryFilmAdapter>();
 builder.Services.AddTransient<IUserFilmAdapter, UserFilmAdapter>();
-
+//builder.Services.AddScoped<IMovieReviewRepository, MovieReviewRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFilmRepository, FilmRepository>();
 builder.Services.AddScoped<ILibraryFilmRepository, LibraryFilmRepository>();
@@ -141,7 +141,13 @@ builder.Services.AddSwaggerGen(option =>
 //});
 
 
+builder.Services.AddCors(p => p.AddPolicy("corsforTLS", builder =>
+{
+    builder.WithOrigins("*")
+    .AllowAnyMethod()
+    .AllowAnyHeader();
 
+}));
 
 var app = builder.Build();
 
@@ -151,6 +157,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("corsforTLS");
 
 app.UseHttpsRedirection();
 

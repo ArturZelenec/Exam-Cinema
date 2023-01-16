@@ -20,6 +20,7 @@ namespace Exam_Cinema.Model
         }
 
         [Key]
+
         public string ISBN { get; set; }
         public string Title { get; set; }
         public string Director { get; set; }

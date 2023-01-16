@@ -6,6 +6,9 @@ namespace Exam_Cinema.Model
     {
         [Key]
         public int Id { get; set; }
+        /// <summary>
+        /// Specific film coude
+        /// </summary>
         public string FilmISBN { get; set; }
         public virtual Film Film { get; set; }
         public bool IsTaken { get; set; }

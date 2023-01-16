@@ -11,6 +11,7 @@ using System.Net.Mime;
 
 namespace Exam_Cinema.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class FilmController : ControllerBase
@@ -56,7 +57,7 @@ namespace Exam_Cinema.Controllers
         }
 
         /// <summary>
-        /// Uzklausia filma is duomenu bazes pagal specifini isbn
+        /// Uzklausia filma is duomenu bazes pagal specifini isbn (filmo kodas)
         /// </summary>
         /// <param name="isbn">Uzklausiamos filmo isbn</param>
         /// <returns>Grazina rezultata</returns>

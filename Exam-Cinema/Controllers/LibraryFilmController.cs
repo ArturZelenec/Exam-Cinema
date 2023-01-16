@@ -6,6 +6,7 @@ using Exam_Cinema.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace Exam_Cinema.Controllers
 {
@@ -27,8 +28,13 @@ namespace Exam_Cinema.Controllers
         /// <summary>
         /// Grazina visus filmus is filmotekos
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Grazina rezultata</returns>
+        /// /// <response code="200">Teisingai ivykdomas gavimas ir parodoma visus filmus</response>
+        /// <response code="500">Baisi klaida!</response>
         [HttpGet("GetAll")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<GetLibraryFilmDto>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Produces(MediaTypeNames.Application.Json)]
         public async Task<ActionResult<List<GetLibraryFilmDto>>> GetLibraryFilms()
         {
             var allLibraryFilms = await _libraryFilmRepo.Getdata_With_EagerLoading();
@@ -39,8 +45,17 @@ namespace Exam_Cinema.Controllers
         /// Grazina viena filma, esancia filmotekoje, pagal filmotekos filmo id
         /// </summary>
         /// <param name="id">filmotekos filmo id</param>
-        /// <returns></returns>
+        /// <returns>Grazina rezultata</returns>
+        /// <response code="200">Teisingai ivykdomas gavimas ir parodoma vieno filmo informacija</response>
+        /// <response code="400">Blogas kreipimasis</response>
+        /// <response code="404">Nerasta</response>
+        /// <response code="500">Baisi klaida!</response>
         [HttpGet("Get/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<GetLibraryFilmDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Produces(MediaTypeNames.Application.Json)]
         public async Task<ActionResult<GetLibraryFilmDto>> GetLibraryFilmById(int id)
         {
             var libraryFilm = await _libraryFilmRepo.Getdata_With_EagerLoading();
@@ -58,10 +73,18 @@ namespace Exam_Cinema.Controllers
         /// Pridedame viena nauja filma i filmoteka
         /// </summary>
         /// <param name="createLibraryFilmDto">Filmo duomenys</param>
-        /// <returns></returns>
+        /// <returns>Grazina rezultata</returns>
+        /// <response code="201">Sekmingai sukuriama nauja filma</response>
+        /// <response code="400">Blogas kreipimasis</response>
+        /// <response code="401">Bando prisijungti ne adminas</response>
+        /// <response code="500">Baisi klaida!</response>
         [HttpPost("Add")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Produces(MediaTypeNames.Application.Json)]
         public async Task<ActionResult<GetLibraryFilmDto>> AddLibraryFilm(CreateLibraryFilmDto createLibraryFilmDto)
         {
             if (createLibraryFilmDto == null || createLibraryFilmDto.FilmISBN == "") return BadRequest();
@@ -104,10 +127,18 @@ namespace Exam_Cinema.Controllers
         /// Istriname filma is filmotekos pagal filmotekos filmo id
         /// </summary>
         /// <param name="id">filmotekos filmo id</param>
-        /// <returns></returns>
+        /// <returns>Grazina rezultata</returns>
+        /// <response code="204">Sekmingai istrinta</response>
+        /// <response code="400">Blogas kreipimasis</response>
+        /// <response code="401">Bando prisijungti ne adminas</response>
+        /// <response code="404">Nerasta</response>
+        /// <response code="500">Baisi klaida!</response>
         [HttpDelete("Delete/{id:int}")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteLibraryFilmById(int id)
         {
             var libraryFilm = await _libraryFilmRepo.GetAsync(lb => lb.Id == id);

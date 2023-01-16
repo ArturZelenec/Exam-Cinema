@@ -2,6 +2,9 @@
 {
     public class UpdateFilmDto
     {
+        /// <summary>
+        /// Film specific number
+        /// </summary>
         public string ISBN { get; set; }
 
         /// <summary>

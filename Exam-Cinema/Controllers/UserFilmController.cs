@@ -18,21 +18,23 @@ namespace Exam_Cinema.Controllers
         private readonly ILibraryFilmRepository _libraryFilmRepo;
         private readonly IUserRepository _userRepo;
         private readonly IUserFilmAdapter _adapter;
-        
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
 
         public UserFilmController(FilmContext db,
                                   IUserFilmRepository userFilmRepo,
                                   IUserFilmAdapter adapter,
                                   ILibraryFilmRepository libraryFilmRepo,
-                                  IUserRepository userRepo)
-                                  
+                                  IUserRepository userRepo,
+                                  IHttpContextAccessor httpContextAccessor)
+
         {
             _db = db;
             _userFilmRepo = userFilmRepo;
             _adapter = adapter;
             _libraryFilmRepo = libraryFilmRepo;
             _userRepo = userRepo;
-           
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -104,6 +106,8 @@ namespace Exam_Cinema.Controllers
             var getUserDto = await _userRepo.GetAsync(b => b.Id == createUserFilmDto.UserId);
             if (getUserDto == null) return NotFound("getUserDto = null");
 
+
+            //HttpContext.User.Identity.Name
             
 
             UserFilm newUserFilm = _adapter.Adapt(getUserDto, libraryFilm);

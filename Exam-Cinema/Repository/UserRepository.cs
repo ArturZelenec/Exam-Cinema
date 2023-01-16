@@ -14,6 +14,8 @@ namespace Exam_Cinema.Repository
         private readonly FilmContext _db;
         private readonly IPasswordService _passwordService;
         private readonly IJwtService _jwtService;
+        
+
         private readonly LoginResponse _emptyTokenAndNullUser = new LoginResponse
         {
             Token = "",

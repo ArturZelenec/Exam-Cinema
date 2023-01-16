@@ -26,6 +26,10 @@ builder.Services.AddScoped<IFilmRepository, FilmRepository>();
 builder.Services.AddScoped<ILibraryFilmRepository, LibraryFilmRepository>();
 builder.Services.AddScoped<IUserFilmRepository, UserFilmRepository>();
 
+
+builder.Services.AddHttpContextAccessor(); ///////////////////////////////////////////////
+
+
 builder.Services.AddDbContext<FilmContext>(option =>
 {
     option.UseSqlite(builder.Configuration.GetConnectionString("DefaultSQLConnection"));

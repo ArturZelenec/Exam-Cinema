@@ -12,10 +12,8 @@ namespace Exam_Cinema.Repository
         {
             _db = db;
         }
-
         public async Task<Film> UpdateAsync(Film film)
         {
-
             film.Updated = DateTime.Now;
             _db.Films.Update(film);
             await _db.SaveChangesAsync();

@@ -14,21 +14,18 @@ namespace Exam_Cinema.Repository
         private readonly FilmContext _db;
         private readonly IPasswordService _passwordService;
         private readonly IJwtService _jwtService;
-        
 
         private readonly LoginResponse _emptyTokenAndNullUser = new LoginResponse
         {
             Token = "",
             User = null
         };
-
         public UserRepository(FilmContext db, IConfiguration conf, IPasswordService passwordService, IJwtService jwtService)
         {
             _db = db;
             _passwordService = passwordService;
             _jwtService = jwtService;
         }
-
         public async Task<bool> IsUniqueUserAsync(string username)
         {
             var isNonUniq = await _db.Users.AnyAsync(u => u.Username == username); //????? !_db
@@ -63,7 +60,6 @@ namespace Exam_Cinema.Repository
 
             return loginResponse;
         }
-
         public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest registrationRequest)
         {
             _passwordService.CreatePasswordHash(registrationRequest.Password, out byte[] hash, out byte[] salt);
@@ -91,7 +87,6 @@ namespace Exam_Cinema.Repository
 
             return registrationResponse;
         }
-
         public async Task<List<GetUserDto>> GetAllAsync(Expression<Func<User, bool>>? filter = null)
         {
             IQueryable<User> users = _db.Users;
@@ -111,7 +106,6 @@ namespace Exam_Cinema.Repository
             }
             return userDto;
         }
-
         public async Task<GetUserDto> GetAsync(Expression<Func<User, bool>> filter)
         {
             User user = await _db.Users.Where(filter).FirstOrDefaultAsync();
@@ -125,7 +119,6 @@ namespace Exam_Cinema.Repository
             };
             return userDto;
         }
-
         public async Task UpdateTakenLibraryFilms(int userId, int modifier)
         {
             User user = _db.Users.First(u => u.Id == userId);
@@ -133,8 +126,5 @@ namespace Exam_Cinema.Repository
             _db.Users.Update(user);
             await _db.SaveChangesAsync();
         }
-
-        
-
     }
 }

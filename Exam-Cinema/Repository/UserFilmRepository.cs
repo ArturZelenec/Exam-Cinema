@@ -9,14 +9,11 @@ namespace Exam_Cinema.Repository
     {
         private readonly FilmContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor; //////////////////////////////
-        
-
         public UserFilmRepository(FilmContext db, IHttpContextAccessor httpContextAccessor) : base(db) //////////////////////////////////////
         {
             _db = db;
             _httpContextAccessor = httpContextAccessor;
         }
-        
         public async Task<UserFilm> UpdateAsync(UserFilm userFilm)
         {
             userFilm.Updated = DateTime.Now;
@@ -24,7 +21,6 @@ namespace Exam_Cinema.Repository
             await _db.SaveChangesAsync();
             return userFilm;
         }
-
         //egerlouding
         public async Task<IEnumerable<UserFilm>> Getdata_With_EagerLoading()
         {
@@ -37,7 +33,6 @@ namespace Exam_Cinema.Repository
             .ToListAsync();
 
             return duomenys;
-
         }
 
     }

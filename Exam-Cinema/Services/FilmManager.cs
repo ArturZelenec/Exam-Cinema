@@ -14,7 +14,6 @@ namespace Exam_Cinema.Services
             _wrapper = wrapper;
             _context = context;
         }
-
         public List<GetFilmDto> Get()
         {
             var sarasas = _context.Films;

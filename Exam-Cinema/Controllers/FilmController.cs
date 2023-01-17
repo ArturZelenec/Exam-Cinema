@@ -229,6 +229,7 @@ namespace Exam_Cinema.Controllers
         /// <response code="404">Nerasta</response>
         /// <response code="500">Baisi klaida!</response>
         [HttpDelete("Delete/{isbn}")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ActionResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

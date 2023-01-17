@@ -45,17 +45,7 @@ namespace Exam_Cinema.Controllers
             }
 
             return Ok();
-            //if (!_userRepo.IsUniqueUserAsync(model.Username))
-            //{
-            //    return BadRequest(new { mesage = "Username already exists" });
-            //}
-
-            //var user = _userRepo.RegisterAsync(model);
-            //if (user == null)
-            //{
-            //    return BadRequest(new { mesage = "Registration failed" });
-            //}
-            //return Ok(user);
+            
         }
     }
 }

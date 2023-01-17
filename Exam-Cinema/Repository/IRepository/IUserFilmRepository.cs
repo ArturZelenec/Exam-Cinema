@@ -6,6 +6,5 @@ namespace Exam_Cinema.Repository.IRepository
     {
         Task<IEnumerable<UserFilm>> Getdata_With_EagerLoading();
         Task<UserFilm> UpdateAsync(UserFilm userFilm);
-
     }
 }

@@ -52,19 +52,6 @@ namespace Exam_Cinema.Services
                 });
             }
             return result;
-            //return new GetUserFilmDto()
-            //{
-
-            //    Id = userFilm.Id,
-            //    UserId = userFilm.UserId,
-            //    UserFullName = userFilm.User.FullName,
-            //    LibraryFilmId = userFilm.LibraryFilmId,
-            //    FilmISBN = userFilm.LibraryFilm.Film.ISBN,
-            //    FilmTitle = userFilm.LibraryFilm.Film.Title,
-            //    FilmDirector = userFilm.LibraryFilm.Film.Director,
-            //    FilmTaken = userFilm.FilmTaken,
-
-            //};
         }
     }
 }

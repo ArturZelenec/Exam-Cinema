@@ -37,20 +37,7 @@ namespace Exam_Cinema.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        /// <summary>
-        /// Grazina visu imtu filmu istorija
-        /// </summary>
-        /// <returns></returns>
-        //[HttpGet("GetAll")]
-        //public ActionResult<List<GetUserFilmDto>> GetAction()
-        //{
-        //    var getUserFilmDtoList = _userFilmRepo.GetAll()
-        //                                          .Select(userFilms => _adapter.Adapt(userFilms))
-        //                                          .ToList();
-        //    return getUserFilmDtoList;
-        //}
-
-        /// <summary>
+         /// <summary>
         /// Grazina vieno kliento ziuretu filmu istorija
         /// </summary>
         /// <response code="200">Teisingai ivykdomas gavimas ir parodoma vieno filmo informacija</response>
@@ -101,14 +88,8 @@ namespace Exam_Cinema.Controllers
             var libraryFilm = await _libraryFilmRepo.GetAsync(b => b.Id == createUserFilmDto.LibraryFilmId);
             if (libraryFilm == null) return NotFound("libraryFilm = null");
 
-            
-
             var getUserDto = await _userRepo.GetAsync(b => b.Id == createUserFilmDto.UserId);
             if (getUserDto == null) return NotFound("getUserDto = null");
-
-
-            //HttpContext.User.Identity.Name
-            
 
             UserFilm newUserFilm = _adapter.Adapt(getUserDto, libraryFilm);
             _userFilmRepo.CreateAsync(newUserFilm);

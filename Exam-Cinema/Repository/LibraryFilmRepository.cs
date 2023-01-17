@@ -13,7 +13,6 @@ namespace Exam_Cinema.Repository
         {
             _db = db;
         }
-
         public async Task<LibraryFilm> UpdateAsync(LibraryFilm libraryFilm)
         {
             libraryFilm.Updated = DateTime.Now;
@@ -21,17 +20,14 @@ namespace Exam_Cinema.Repository
             await _db.SaveChangesAsync();
             return libraryFilm;
         }
-
         public async Task<IEnumerable<LibraryFilm>> Getdata_With_EagerLoading()
         {
-
             var duomenys = await _db.LibraryFilms
             .Include(f => f.Film)
             .ThenInclude(f => f.LibraryFilms)
             .ToListAsync();
 
             return duomenys;
-
         }
     }
 }

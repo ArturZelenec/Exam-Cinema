@@ -70,7 +70,7 @@ namespace Exam_Cinema.Controllers
         }
 
         /// <summary>
-        /// Pridedame viena nauja filma i filmoteka
+        /// Pridedame viena nauja filma i filmoteka, gali tik adminas
         /// </summary>
         /// <param name="createLibraryFilmDto">Filmo duomenys</param>
         /// <returns>Grazina rezultata</returns>
@@ -124,7 +124,7 @@ namespace Exam_Cinema.Controllers
         //}
 
         /// <summary>
-        /// Istriname filma is filmotekos pagal filmotekos filmo id
+        /// Istriname filma is filmotekos pagal filmotekos filmo id, gali tik adminas
         /// </summary>
         /// <param name="id">filmotekos filmo id</param>
         /// <returns>Grazina rezultata</returns>

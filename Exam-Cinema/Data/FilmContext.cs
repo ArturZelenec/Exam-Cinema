@@ -11,7 +11,6 @@ namespace Exam_Cinema.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserFilm> UserFilms { get; set; }
         public DbSet<LibraryFilm> LibraryFilms { get; set; }
-        //public DbSet<MovieReview> MovieReviews { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

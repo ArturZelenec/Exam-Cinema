@@ -104,15 +104,17 @@ namespace Exam_Cinema.Controllers
         /// </summary>
         /// <param name="createFilmDto">Filmo objektas</param>
         /// <returns>Grazina rezultata</returns>
-        /// <response code="201">Sekmingai sukuriama nauja filma</response>
+        /// <response code="201">Sekmingai sukure nauja filma</response>
         /// <response code="400">Blogas kreipimasis</response>
-        /// <response code="401">Bando prisijungti ne adminas</response>
+        /// <response code="401">Bando prisijungti neautorizuotas useris</response>
+        /// <response code="403">Bando prisijungti ne adminas</response>
         /// <response code="500">Baisi klaida!</response>
         [HttpPost("Create")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IEnumerable<CreateFilmDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
         public async Task<ActionResult<CreateFilmDto>> CreateFilm(CreateFilmDto createFilmDto)
@@ -185,13 +187,15 @@ namespace Exam_Cinema.Controllers
         /// <returns></returns>
         /// <response code="204">Sekmingai atnaujintas filmas</response>
         /// <response code="400">Blogas kreipimasis</response>
-        /// <response code="401">Bando prisijungti ne adminas</response>
+        /// <response code="401">Bando prisijungti neautorizuotas useris</response>
+        /// <response code="403">Bando prisijungti ne adminas</response>
         /// <response code="500">Baisi klaida!</response>
         [HttpPut("Update")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(IEnumerable<CreateFilmDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateFilm(UpdateFilmDto filmUpdated)
         {
@@ -225,13 +229,15 @@ namespace Exam_Cinema.Controllers
         /// <returns>Grazina rezultata</returns>
         /// <response code="204">Sekmingai istrinta</response>
         /// <response code="400">Blogas kreipimasis</response>
-        /// <response code="401">Bando prisijungti ne adminas</response>
+        /// <response code="401">Bando prisijungti neautorizuotas useris</response>
+        /// <response code="403">Bando prisijungti ne adminas</response>
         /// <response code="404">Nerasta</response>
         /// <response code="500">Baisi klaida!</response>
         [HttpDelete("Delete/{isbn}")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(ActionResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> DeleteFilmByISBN(string isbn)

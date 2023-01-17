@@ -76,13 +76,15 @@ namespace Exam_Cinema.Controllers
         /// <returns>Grazina rezultata</returns>
         /// <response code="201">Sekmingai sukuriama nauja filma</response>
         /// <response code="400">Blogas kreipimasis</response>
-        /// <response code="401">Bando prisijungti ne adminas</response>
+        /// <response code="401">Bando prisijungti neautorizuotas useris</response>
+        /// <response code="403">Bando prisijungti ne adminas</response>
         /// <response code="500">Baisi klaida!</response>
         [HttpPost("Add")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces(MediaTypeNames.Application.Json)]
         public async Task<ActionResult<GetLibraryFilmDto>> AddLibraryFilm(CreateLibraryFilmDto createLibraryFilmDto)
@@ -99,29 +101,6 @@ namespace Exam_Cinema.Controllers
             return CreatedAtAction(nameof(GetLibraryFilmById), new { id = newLibraryFilm.Id }, getLibraryFilmDto);
         }
 
-        /// <summary>
-        /// Pridedamas norimas kiekis filmu i filmoteka
-        /// </summary>
-        /// <param name="libraryFilmDto">filmo duomenys</param>
-        /// <param name="count">norimas kiekis</param>
-        /// <returns></returns>
-        //[HttpPost("AddMany/{count:int}")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //public ActionResult AddManyLibraryFilms(CreateLibraryFilmDto libraryFilmDto, int count)
-        //{
-        //    if (libraryFilmDto == null || libraryFilmDto.FilmISBN == "" || count <= 0) return BadRequest();
-
-        //    var film = _db.Films.FirstOrDefault(b => b.ISBN == libraryFilmDto.FilmISBN);
-        //    if (film == null) return NotFound();
-
-        //    for (int i = 0; i < count; i++)
-        //    {
-        //        LibraryFilm newLibraryFilm = _adapter.Adapt(libraryFilmDto.FilmISBN, film);
-        //        _libraryFilmRepo.Create(newLibraryFilm);
-        //    }
-
-        //    return Ok();
-        //}
 
         /// <summary>
         /// Istriname filma is filmotekos pagal filmotekos filmo id, gali tik adminas
@@ -130,13 +109,15 @@ namespace Exam_Cinema.Controllers
         /// <returns>Grazina rezultata</returns>
         /// <response code="204">Sekmingai istrinta</response>
         /// <response code="400">Blogas kreipimasis</response>
-        /// <response code="401">Bando prisijungti ne adminas</response>
+        /// <response code="401">Bando prisijungti neautorizuotas useris</response>
+        /// <response code="403">Bando prisijungti ne adminas</response>
         /// <response code="404">Nerasta</response>
         /// <response code="500">Baisi klaida!</response>
         [HttpDelete("Delete/{id:int}")]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteLibraryFilmById(int id)

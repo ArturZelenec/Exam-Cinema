@@ -38,7 +38,7 @@ namespace Exam_Cinema.Controllers
         }
 
          /// <summary>
-        /// Grazina vieno kliento ziuretu filmu istorija
+        /// Grazina vieno kliento paimtus filmus
         /// </summary>
         /// <response code="200">Teisingai ivykdomas gavimas ir parodoma vieno filmo informacija</response>
         /// <response code="400">Blogas kreipimasis</response>
